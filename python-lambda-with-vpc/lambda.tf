@@ -1,17 +1,3 @@
-terraform {
-  required_version = ">= 1.6.0"
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 5.0"
-    }
-  }
-}
-
-provider "aws" {
-  region = var.aws_region_name
-}
-
 data "aws_iam_policy_document" "lambda_assume_role" {
   statement {
     effect = "Allow"
@@ -24,7 +10,7 @@ data "aws_iam_policy_document" "lambda_assume_role" {
 }
 
 data "aws_iam_policy" "lambda_exec_policy" {
-  name = "AWSLambdaBasicExecutionRole"
+  name = "AWSLambdaVPCAccessExecutionRole"
 }
 
 resource "aws_iam_role" "lambda_exec_role" {
@@ -39,7 +25,7 @@ resource "aws_iam_role_policy_attachment" "lambda_exec_role_policy" {
 
 data "archive_file" "lambda_function_archive_file" {
   type        = "zip"
-  source_file = "lambda_function.mjs"
+  source_file = "lambda_function.py"
   output_path = "lambda_function.zip"
 }
 
@@ -47,10 +33,15 @@ resource "aws_lambda_function" "lambda_function" {
   filename         = "lambda_function.zip"
   function_name    = var.lambda_function_name
   role             = aws_iam_role.lambda_exec_role.arn
-  description      = "Simple nodejs based lambda function"
+  description      = "Simple python based lambda function with VPC"
   handler          = "lambda_function.lambda_handler"
   source_code_hash = data.archive_file.lambda_function_archive_file.output_base64sha256
-  runtime          = "nodejs20.x"
+  runtime          = "python3.12" # Change the compatable runtime based on your preference
+  layers           = [aws_lambda_layer_version.lambda_layer.arn]
+  vpc_config {
+    subnet_ids = [ for sn in aws_subnet.private_subnets : sn.id ]
+    security_group_ids = [ aws_default_security_group.default_sg.id ]
+  }
   tags = merge(
     local.common_tags,
     {

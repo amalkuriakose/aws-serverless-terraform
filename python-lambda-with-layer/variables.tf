@@ -1,3 +1,8 @@
+variable "aws_region_name" {
+  type = string
+  default = "us-east-1"
+}
+
 variable "lambda_function_name" {
   type    = string
   default = "python-lambda-with-layer"

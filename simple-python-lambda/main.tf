@@ -9,7 +9,7 @@ terraform {
 }
 
 provider "aws" {
-  region = "us-east-1"
+  region = var.aws_region_name
 }
 
 data "aws_iam_policy_document" "lambda_assume_role" {
