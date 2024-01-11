@@ -1,8 +1,10 @@
 data "aws_availability_zones" "available" {
   state = "available"
+  filter {
+    name   = "opt-in-status"
+    values = ["opt-in-not-required"]
+  }
 }
-
-data "aws_region" "available" {}
 
 resource "aws_vpc" "vpc" {
   cidr_block           = var.vpc_cidr
@@ -83,7 +85,7 @@ resource "aws_route_table_association" "public_subnets_association" {
 
 resource "aws_eip" "eip" {
   domain               = "vpc"
-  network_border_group = data.aws_region.available.name
+  network_border_group = var.aws_region_name
   tags = merge(
     local.common_tags,
     {
