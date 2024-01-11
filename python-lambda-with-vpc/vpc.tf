@@ -18,6 +18,7 @@ resource "aws_vpc" "vpc" {
 resource "aws_subnet" "public_subnets" {
   for_each = local.azs_set
   vpc_id   = aws_vpc.vpc.id
+  availability_zone = each.value
   cidr_block = cidrsubnet(
     aws_vpc.vpc.cidr_block,
     8,
@@ -35,6 +36,7 @@ resource "aws_subnet" "public_subnets" {
 resource "aws_subnet" "private_subnets" {
   for_each = local.azs_set
   vpc_id   = aws_vpc.vpc.id
+  availability_zone = each.value
   cidr_block = cidrsubnet(
     aws_vpc.vpc.cidr_block,
     8,
