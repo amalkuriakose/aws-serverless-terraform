@@ -5,20 +5,20 @@
 ## How to run Terraform scripts
 
 #### To download the required providers and plugins:
->`terraform init`
+> terraform init
 
 #### To validate the configurations:
->`terraform validate`
+> terraform validate
 
 #### To format the configurations:
->`terraform fmt`
+> terraform fmt
 
 #### To generate an execution plan:
->`terraform plan`
+> terraform plan
 
 #### To apply the changes:
->`terraform apply`
+> terraform apply
 
 #### To destroy the infrastructure:
->`terraform destroy`
+> terraform destroy
 
