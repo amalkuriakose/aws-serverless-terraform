@@ -12,7 +12,7 @@ resource "aws_vpc" "vpc" {
   tags = merge(
     local.common_tags,
     {
-      Name = "${var.network_name}-vpc"
+      Name = "${var.app_name}-vpc"
     }
   )
 }
@@ -30,7 +30,7 @@ resource "aws_subnet" "public_subnets" {
   tags = merge(
     local.common_tags,
     {
-      Name = "${var.network_name}-public-sn-${each.value}"
+      Name = "${var.app_name}-public-sn-${each.value}"
     }
   )
 }
@@ -47,7 +47,7 @@ resource "aws_subnet" "private_subnets" {
   tags = merge(
     local.common_tags,
     {
-      Name = "${var.network_name}-private-sn-${each.value}"
+      Name = "${var.app_name}-private-sn-${each.value}"
     }
   )
 }
@@ -58,7 +58,7 @@ resource "aws_internet_gateway" "igw" {
   tags = merge(
     local.common_tags,
     {
-      Name = "${var.network_name}-igw"
+      Name = "${var.app_name}-igw"
     }
   )
 }
@@ -72,7 +72,7 @@ resource "aws_default_route_table" "public_route_table" {
   tags = merge(
     local.common_tags,
     {
-      Name = "${var.network_name}-public-rt"
+      Name = "${var.app_name}-public-rt"
     }
   )
 }
@@ -89,7 +89,7 @@ resource "aws_eip" "eip" {
   tags = merge(
     local.common_tags,
     {
-      Name = "${var.network_name}-eip"
+      Name = "${var.app_name}-eip"
     }
   )
 }
@@ -100,7 +100,7 @@ resource "aws_nat_gateway" "natgw" {
   tags = merge(
     local.common_tags,
     {
-      Name = "${var.network_name}-natgw"
+      Name = "${var.app_name}-natgw"
     }
   )
   depends_on = [aws_internet_gateway.igw]
@@ -115,7 +115,7 @@ resource "aws_route_table" "private_route_table" {
   tags = merge(
     local.common_tags,
     {
-      Name = "${var.network_name}-private-rt"
+      Name = "${var.app_name}-private-rt"
     }
   )
 }
@@ -152,7 +152,7 @@ resource "aws_default_network_acl" "default_nacl" {
   tags = merge(
     local.common_tags,
     {
-      Name = "${var.network_name}-default-nacl"
+      Name = "${var.app_name}-default-nacl"
     }
   )
 }
@@ -176,7 +176,7 @@ resource "aws_default_security_group" "default_sg" {
   tags = merge(
     local.common_tags,
     {
-      Name = "${var.network_name}-default-sg"
+      Name = "${var.app_name}-default-sg"
     }
   )
 }

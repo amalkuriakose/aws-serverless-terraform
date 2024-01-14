@@ -34,7 +34,7 @@ variable "vpc_cidr" {
   }
 }
 
-variable "network_name" {
+variable "app_name" {
   type    = string
   default = "test"
 }
