@@ -35,3 +35,5 @@ terraform.rc
 
 # Lock file
 .terraform.lock.hcl
+
+builds
